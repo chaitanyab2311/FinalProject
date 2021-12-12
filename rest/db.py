@@ -12,15 +12,18 @@ import platform
 import json
 
 
-cluster = Cluster()
+
 
 ##
 ## Configure test vs. production
 ##
 rabbitMQHost = os.getenv("RABBITMQ_HOST") or "localhost"
+cassandraHost = os.getenv("CASSANDRA_HOST") or "localhost"
 
 print("Connecting to rabbitmq({})".format(rabbitMQHost))
+print("Connecting to cassandra ({})".format(cassandraHost))
 
+cluster = Cluster([cassandraHost])
 
 
 def enqueueDataToLogsExchange(message,messageType):

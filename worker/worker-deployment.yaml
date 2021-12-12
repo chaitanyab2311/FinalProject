@@ -16,9 +16,11 @@ spec:
     spec:
       containers:
       - name: worker
-        image: chaitanyab2311/worker-server:v2
+        image: chaitanyab2311/projectworker
         env:
         - name: REDIS_HOST
           value: redis
         - name: RABBITMQ_HOST
           value: rabbitmq
+        - name: CASSANDRA_HOST
+          value: cassandra

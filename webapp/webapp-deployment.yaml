@@ -1,31 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  #the Deployment Name
+  creationTimestamp: null
+  labels:
+    app: webapp
   name: webapp
 spec:
-  #the Number of Pods
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: webapp
+  strategy: {}
   template:
     metadata:
+      creationTimestamp: null
       labels:
         app: webapp
     spec:
-      # Container Details
       containers:
-      - name: webapp
-        # Docker Image
-        image: chaitanyab2311/webapp:v1
-        resources:
-         #cpu and memory limit
-          limits:
-            memory: "550Mi"
-            cpu: "500m"
+      - image: chaitanyab2311/react-app
+        name: webapp
+        imagePullPolicy: Always
+        resources: {}
         ports:
-        #the port on which the app can be reached out inside the container
-        - containerPort: 80
-
-
+          - containerPort: 80 
+status: {}

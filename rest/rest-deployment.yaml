@@ -19,12 +19,14 @@ spec:
     spec:
       containers:
       - name: rest-server
-        image: chaitanyab2311/sentiment-rest:v1
+        image: chaitanyab2311/projectrest
         env:
         - name: REDIS_HOST
           value: redis
         - name: RABBITMQ_HOST
           value: rabbitmq
+        - name: CASSANDRA_HOST
+          value: cassandra
         resources:
           limits:
             cpu: 100m  

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: logs
-        image: chaitanyab2311/sentiment-logs:v1
+        image: chaitanyab2311/projectlogs
         resources:
           requests:
             cpu: 100m

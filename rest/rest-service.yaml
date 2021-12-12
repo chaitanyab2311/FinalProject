@@ -3,13 +3,11 @@ kind: Service
 metadata:
   name: rest-server
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: rest-server
   ports:
       # By default and for convenience, the `targetPort` is set to the same value as the `port` field.
-    - port: 5001
-      targetPort: 5001
-      # Optional field
-      # By default and for convenience, the Kubernetes control plane will allocate a port from a range (default: 30000-32767)
-      nodePort: 30007
+    - port: 5000
+      targetPort: 5000
+      

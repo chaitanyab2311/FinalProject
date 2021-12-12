@@ -15,8 +15,11 @@ import json
 ## Configure test vs. production
 ##
 rabbitMQHost = os.getenv("RABBITMQ_HOST") or "localhost"
+cassandraHost = os.getenv("CASSANDRA_HOST") or "localhost"
+
 
 print("Connecting to rabbitmq({})".format(rabbitMQHost))
+print("Connecting to cassandra ({})".format(cassandraHost))
 
 
 def enqueueDataToLogsExchange(message,messageType):
@@ -43,11 +46,13 @@ def enqueueDataToLogsExchange(message,messageType):
     rabbitMQ.close()
 
 
-cluster = Cluster()
+cluster = Cluster([cassandraHost])
 
 def insert_prices(prices_data):
   try:
     session = cluster.connect('products')
+
+    enqueueDataToLogsExchange("Connected to cluster products","debug")
 
     for website in prices_data:
       for data in range(0,len(prices_data[website])):

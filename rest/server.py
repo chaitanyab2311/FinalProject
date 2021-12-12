@@ -7,9 +7,11 @@ import hashlib, requests
 import json
 import pickle
 import uuid
-
-from db import *
 from flask_cors import CORS
+import sys
+sys.path.insert(0, '')
+import db
+
 
 
 class enqueueWorker(object):
@@ -123,17 +125,17 @@ def analyze():
 def most_searched():
     try:
 
-        # enqueueDataToLogsExchange('Into get most searched api',"info")
+        enqueueDataToLogsExchange('Into get most searched api',"info")
 
-        most_searched = getMostSearchedProducts()
+        most_searched = db.getMostSearchedProducts()
 
-        # enqueueDataToLogsExchange('After get most searched api',"info")
+        enqueueDataToLogsExchange('After get most searched api',"info")
 
         return Response(response=json.dumps(most_searched), status=200, mimetype="application/json")
 
     except Exception as e:
         print("Something went wrong" + str(e))
-        enqueueDataToLogsExchange('Error occured in api /apiv1/analyze','info')
+        enqueueDataToLogsExchange('Error occured in api /apiv1/getMostSearced' + str(e),'info')
         return Response(response="Something went wrong!", status=500, mimetype="application/json")
 
 

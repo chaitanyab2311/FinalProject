@@ -10,6 +10,7 @@ const SearchBar = () => {
     const [showTable, setshowTable] = useState(false);
     const [amazonData, setAmazonData] = useState([]);
     const [ebayData, setEbayData] = useState([]);
+    const [bestbuyData, setBestbuyData] = useState([]);
     const [showLoader, setLoader] = useState(false);
     const [mostSearched, setMostSearched] = useState({});
 
@@ -48,6 +49,8 @@ const SearchBar = () => {
                 setLoader(false);
                 setAmazonData(response.data.amazon);
                 setEbayData(response.data.ebay);
+                setBestbuyData(response.data.bestbuy);
+                
 
                 axios.post(`${mostsearchedurl}`)
                     .then((response) => {
@@ -107,7 +110,7 @@ const SearchBar = () => {
                     </div>
                 </div>
                 <div style={{ width: '30%', margin: '5px' }}>
-                    <h3 style={{ textAlign: 'center' }}>Most searched Products</h3>
+                    <h3 style={{ textAlign: 'center' }}>Most searched Products (Top 5)</h3>
 
 
 
@@ -148,7 +151,7 @@ const SearchBar = () => {
                 <div className="container">
                     <div style={{ display: 'flex', justifyContent: 'center', height: '-25vh' }}>
 
-                        <div style={{ width: '50%' }}>
+                        <div style={{ width: '33%' }}>
 
                             <h3 style={{ textAlign: 'center' }}>Amazon</h3>
 
@@ -186,7 +189,7 @@ const SearchBar = () => {
                             </table>
                         </div>
 
-                        <div style={{ width: '50%' }}>
+                        <div style={{ width: '33%' }}>
 
                             <h3 style={{ textAlign: 'center' }}>Ebay</h3>
 
@@ -224,6 +227,46 @@ const SearchBar = () => {
                                 </tbody>
                             </table>
                         </div>
+
+                        <div style={{ width: '33%' }}>
+
+                            <h3 style={{ textAlign: 'center' }}>BestBuy</h3>
+
+                            <table className="styled-table">
+                                <thead className="cellcontainer">
+
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Product Price</th>
+
+                                    </tr>
+
+
+                                </thead>
+                                <tbody className="cellcontainer">
+
+
+                                    {bestbuyData.map((listValue, index) => {
+                                        return (
+
+                                            <tr key={index} style={{ backgroundColor: index == 0 ? '#dfd' : "#ffffff" }}>
+                                                <td>
+                                                    <img src={listValue.product_image_url}></img>
+                                                </td>
+                                                <td>
+                                                    <a href={ 'http://www.bestbuy.com/' + listValue.product_url}>
+                                                        {listValue.productname}
+                                                    </a>
+                                                    <div><b>${listValue.productprice}</b></div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+
+                                </tbody>
+                            </table>
+                        </div>
+                        
 
                     </div>
                 </div>

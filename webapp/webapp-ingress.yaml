@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-resource
+  name: ingress-webapp
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -10,9 +10,9 @@ spec:
   - http:
       paths:
       - pathType: Prefix
-        path: /
+        path: /app
         backend:
           service:
-            name: rest-server
+            name: webapp
             port:
-              number: 5000
+              number: 31000

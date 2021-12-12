@@ -5,54 +5,30 @@ import io
 import os
 import sys
 import pika
-import redis
 import hashlib
 import json
 import requests
 
-from scrape import *
-from db import *
-
-
-hostname = platform.node()
+import sys
+sys.path.insert(0, '')
+import db
+import scrape
 
 
 ## Configure test vs. production
 rabbitMQHost = os.getenv("RABBITMQ_HOST") or "localhost"
 print(f"Connecting to rabbitmq({rabbitMQHost})")
-                                                           
-
-## Set up rabbitmq connection
-rabbitMQ = pika.BlockingConnection(
-        pika.ConnectionParameters(host=rabbitMQHost))
-rabbitMQChannel = rabbitMQ.channel()
-toWorkerResult = rabbitMQChannel.queue_declare(queue='toWorker')
-
-queue_name = toWorkerResult.method.queue
-
-
-def enqueueDataToLogsExchange(message,messageType):
+rabbitMQChannel = None                                                
+try:
+    ## Set up rabbitmq connection
     rabbitMQ = pika.BlockingConnection(
             pika.ConnectionParameters(host=rabbitMQHost))
     rabbitMQChannel = rabbitMQ.channel()
+    toWorkerResult = rabbitMQChannel.queue_declare(queue='toWorker')
 
-    rabbitMQChannel.exchange_declare(exchange='logs', exchange_type='topic')
-
-    infoKey = f"{platform.node()}.worker.info"
-    debugKey = f"{platform.node()}.worker.debug"
-
-    if messageType == "info":
-        key = infoKey
-    elif messageType == "debug":
-        key = debugKey
-
-    rabbitMQChannel.basic_publish(
-        exchange='logs', routing_key='logs', body=json.dumps(message))
-
-    print(" [x] Sent %r:%r" % (key, message))
-
-    rabbitMQChannel.close()
-    rabbitMQ.close()
+    queue_name = toWorkerResult.method.queue
+except Exception as e:
+    print("Exception occured " + str(e))
 
 
 
@@ -62,9 +38,9 @@ def callback(ch, method, properties, body):
 
     product = queuedata['product_name']
 
-    final_output = start_scraping(product)
-    response = insert_prices(final_output)
-    addSearchProduct(product)
+    final_output = scrape.start_scraping(product)
+    response = db.insert_prices(final_output)
+    db.addSearchProduct(product)
 
     ch.basic_publish(exchange='',
                      routing_key=properties.reply_to,
