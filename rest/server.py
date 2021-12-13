@@ -128,7 +128,7 @@ def most_searched():
         enqueueDataToLogsExchange('Into get most searched api',"info")
 
         most_searched = db.getMostSearchedProducts()
-
+        print(most_searched)
         enqueueDataToLogsExchange('After get most searched api',"info")
 
         return Response(response=json.dumps(most_searched), status=200, mimetype="application/json")

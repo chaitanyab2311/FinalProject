@@ -63,10 +63,12 @@ def insert_prices(prices_data):
           rows = session.execute("INSERT INTO products.products (uid,productName,productPrice,website,productimageurl,producturl,dateAdded) VALUES (uuid(),'"+ prices_data[website][data]['productname'] + "'," + str(prices_arr[0]) + ",'" + website + "','" + prices_data[website][data]['product_image_url'] + "','" + prices_data[website][data]['product_url'] + "',toTimestamp(now()));")
     
     amazonlist = sorted(prices_data['amazon'], key=lambda d: float(d['productprice'])) 
-    ebaylist = sorted(prices_data['ebay'], key=lambda d: float(d['productprice'])) 
+    ebaylist = sorted(prices_data['ebay'], key=lambda d: float(d['productprice']))
+    bestbuylist = sorted(prices_data['bestbuy'], key=lambda d: float(d['productprice'])) 
 
     prices_data['amazon'] = amazonlist
     prices_data['ebay'] = ebaylist
+    prices_data['bestbuy'] = bestbuylist
 
 
   except Exception as e:
